@@ -91,16 +91,16 @@
 
                 // put a camera in the scene
                 camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000);
-                camera.position.set(0, 5, 30);
+                camera.position.set(3, 10, 45);
                 camera.rotation.x = -0.2;
                 scene.add(camera);
 
                 // create a camera contol
-                cameraControls = new THREEx.DragPanControls(camera)
-                cameraControls.speedX = 0.03;
-                cameraControls.speedY = 0.03;
-                cameraControls.rangeX = -360;
-                cameraControls.rangeY = +360;
+//                cameraControls = new THREEx.DragPanControls(camera)
+//                cameraControls.speedX = 0.03;
+//                cameraControls.speedY = 0.03;
+//                cameraControls.rangeX = -360;
+//                cameraControls.rangeY = +360;
 
                 // transparently support window resize
                 THREEx.WindowResize.bind(renderer, camera);
