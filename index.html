@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Topheman test Cone 3d</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+
+        <script src="vendor/three.js/Three.js"></script>
+        <script src="vendor/three.js/Detector.js"></script>
+        <!-- https://github.com/mrdoob/stats.js -->
+        <script src="vendor/three.js/Stats.js"></script>
+
+        <script src="vendor/threex/THREEx.screenshot.js"></script>
+        <script src="vendor/threex/THREEx.FullScreen.js"></script>
+        <script src="vendor/threex/THREEx.WindowResize.js"></script>
+        <script src="vendor/threex.dragpancontrols.js"></script>
+
+        <script src="js/Cone3d.js"></script>
+
+        <link  href="css/main.css" rel="stylesheet"/>
+    </head>
+    <body>
+		<a href="https://github.com/topheman/threejs-cone"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+        <!-- three.js container -->
+        <div id="container"></div>
+        <!-- info on screen display -->
+        <div id="info">
+            <div class="top">
+                <a href="http://learningthreejs.com/blog/2011/12/20/boilerplate-for-three-js/" target="_blank">LearningThree.js</a>
+                boiler plate for
+                <a href="https://github.com/mrdoob/three.js/" target="_blank">three.js</a>
+            </div>
+            <div class="bottom" id="inlineDoc" >
+                - <i>p</i> for screenshot
+            </div> 
+        </div> 
+
+        <script type="text/javascript">
+            var stats, scene, renderer;
+            var camera, cameraControl;
+            var cone, plane, range;
+
+
+            if( !init() )	animate();
+
+            // init the scene
+            function init(){
+
+                if( Detector.webgl ){
+                    renderer = new THREE.WebGLRenderer({
+                        antialias		: true,	// to get smoother output
+                        preserveDrawingBuffer	: true	// to allow screenshot
+                    });
+                    renderer.setClearColorHex( 0xBBBBBB, 1 );
+                    renderer.shadowMapEnabled	= true;
+                    renderer.shadowMapSoft		= true;
+                    // uncomment if webgl is required
+                    //}else{
+                    //	Detector.addGetWebGLMessage();
+                    //	return true;
+                }else{
+                    renderer	= new THREE.CanvasRenderer();
+                }
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.getElementById('container').appendChild(renderer.domElement);
+
+                // add Stats.js - https://github.com/mrdoob/stats.js
+                stats = new Stats();
+                stats.domElement.style.position	= 'absolute';
+                stats.domElement.style.bottom	= '0px';
+                document.body.appendChild( stats.domElement );
+
+                // create a scene
+                scene = new THREE.Scene();
+
+                // put a camera in the scene
+                camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000 );
+                camera.position.set(0, 5, 30);
+                camera.rotation.x = -0.2;  
+                scene.add(camera);
+
+                // create a camera contol
+                cameraControls	= new THREEx.DragPanControls(camera)
+                cameraControls.speedX	= 0.03;
+                cameraControls.speedY	= 0.03;
+                cameraControls.rangeX	= -360;
+                cameraControls.rangeY	= +360;
+
+                // transparently support window resize
+                THREEx.WindowResize.bind(renderer, camera);
+                // allow 'p' to make screenshot
+                THREEx.Screenshot.bindKey(renderer);
+                // allow 'f' to go fullscreen where this feature is supported
+                if( THREEx.FullScreen.available() ){
+                    THREEx.FullScreen.bindKey();		
+                    document.getElementById('inlineDoc').innerHTML	+= "- <i>f</i> for fullscreen";
+                }
+
+                // here you add your objects
+                // - you will most likely replace this part by your own
+      
+                //add cone
+                cone	= new THREE.Cone3d();
+                cone.castShadow = true;
+                cone.receiveShadow = false;
+                scene.add( cone );
+      
+                range = 0;
+
+                // init the lights
+                //http://learningthreejs.com/blog/2012/01/20/casting-shadows/
+
+                //                ambient	= new THREE.AmbientLight( 0x444444 );
+                //                scene.add( ambient );
+			
+//                light	= new THREE.DirectionalLight( 0xFFFFFF );
+//                light.position.set( 10, 10, 10 );//.normalize();
+//                light.shadowCameraVisible = true;
+//                light.shadowDarkness		= 0.5;
+//                scene.add( light );
+
+        var light	= new THREE.SpotLight( 0x8888FF, 2 );
+        spot1	= light;
+        light.position.set( 10, 12, 10 );//.normalize();
+        light.target.position.set( 0, 0, 0 );
+        light.rotation.y = Math.PI;
+        light.shadowCameraNear		= 0.01;		
+        light.castShadow		= true;
+        light.shadowDarkness		= 0.5;
+        light.shadowCameraVisible	= true;
+        scene.add( light );
+      
+                //https://github.com/mrdoob/three.js/blob/master/examples/webgl_shadowmap.html
+                // GROUND
+
+                var geometry = new THREE.PlaneGeometry( 100, 100 );
+                var planeMaterial = new THREE.MeshPhongMaterial( { color: 0xffdd99 } );
+                
+//                var planeMaterial	= new THREE.MeshPhongMaterial({
+//                    ambient		: 0x444444,
+//                    color		: 0x66aa66,
+//                    shininess	: 150, 
+//                    specular	: 0x888888,
+//                    shading		: THREE.SmoothShading
+//                });
+                        
+                THREE.ColorUtils.adjustHSV( planeMaterial.color, 0, 0, 0.9 );
+                planeMaterial.ambient = planeMaterial.color;
+
+                ground = new THREE.Mesh( geometry, planeMaterial );
+
+                ground.position.set( 0, 0, 0 );
+                ground.rotation.x = -Math.PI/2;
+                ground.scale.set( 100, 100, 100 );
+
+                ground.castShadow = false;
+                ground.receiveShadow = true;
+
+                scene.add( ground );
+      
+            }
+
+            // animation loop
+            function animate() {
+
+                // loop on request animation loop
+                // - it has to be at the begining of the function
+                // - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+                requestAnimationFrame( animate );
+
+                // do the render
+                render();
+
+                // update stats
+                stats.update();
+            }
+
+            // render the scene
+            function render() {
+
+                // update camera controls
+                cameraControls.update();
+
+        cone.rotation.y += 0.01;
+
+        cone.scale.y = 1 + Math.sin(range) * 0.1;
+        
+        range += 0.1;
+        
+//        console.info(range, cone.scale.y);
+        
+                // actually render the scene
+                renderer.render( scene, camera );
+            }
+        </script>
+    </body>
+</html>
