@@ -3,7 +3,6 @@ Little side project to test threejs made out [boilerplate for three.js](https://
 Test at [labs.topheman.com/threejs](http://labs.topheman.com/threejs/)
 
 * Use the arrow keys to control the cone
-* hit "b" to make it bounce
-* hit "n" to stop it bounce
-* hit "l" to make it squint
-* hit "m" to make it stop
+* hit "space" to make it bounce/stop bounce
+* hit "shift" to make it squint
+* hit "ctrl" to make it stop
