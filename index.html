@@ -38,6 +38,10 @@
         </div> 
 
         <script type="text/javascript">
+			//not compatible with chrome 31 anymore
+			if(navigator.userAgent.indexOf('Chrome/31') > -1){
+				alert("I'm sorry, I just found out that this demo is not compatible with the latest version of chrome anymore.\n\nYou still can test it on other browsers.\n\nI will make some 3d/JavaScript project soon (probably on Babylon.js).");
+			}
             var stats, scene, renderer;
             var camera, cameraControl;
             var cone, plane, range;
