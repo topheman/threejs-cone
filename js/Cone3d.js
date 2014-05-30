@@ -36,7 +36,7 @@ THREE.Cone3d = function(){
     
     rightEyeGeometry = new THREE.SphereGeometry(1, 10, 10);
     rightEyeTexture = THREE.ImageUtils.loadTexture( "./images/eye.png" );
-    console.info(rightEyeTexture,leftEyeTexture);
+//    console.info(rightEyeTexture,leftEyeTexture);
     rightEyeTexture.wrapS = rightEyeTexture.wrapT = THREE.ClampToEdgeWrapping;
     rightEyeMaterial = new THREE.MeshLambertMaterial({
         color: 0xFFFFFF,
@@ -75,7 +75,7 @@ THREE.Cone3d = function(){
     
     this.reInit();
     
-}
+};
 
 THREE.Cone3d.prototype = new THREE.Object3D();
 THREE.Cone3d.prototype.constructor = THREE.Cone3d;
@@ -86,48 +86,48 @@ THREE.Cone3d.prototype.reInit = function(){
     this.leftEye.material.map.offset.y = this.leftEye.material.map.offset.original.y;
     this.rightEye.material.map.offset.y = this.rightEye.material.map.offset.original.y;
     this._bounceInfos = {};
-}
+};
 
 THREE.Cone3d.prototype.update = function(){
     this.updateBounce();
-}
+};
 
 THREE.Cone3d.prototype.updateBounce = function(){
     if(this.bouncing == true){
         this.scale.y = 1 + Math.sin(this._bounceInfos.range) * 0.1;
         this._bounceInfos.range += 0.1;
     }
-}
+};
 
 THREE.Cone3d.prototype.turnLeft = function(){
     this.rotation.y += 0.05;
-}
+};
 
 THREE.Cone3d.prototype.turnRight = function(){
     this.rotation.y -= 0.05;
-}
+};
 
 THREE.Cone3d.prototype.moveForward = function(){
     this.translateZ(0.5);
-}
+};
 
 THREE.Cone3d.prototype.moveBack = function(){
     this.translateZ(-0.5);
-}
+};
 
 THREE.Cone3d.prototype.bounce = function(){
     if(this.bouncing == false){
         this._bounceInfos.range = 0;
         this.bouncing = true;
     }
-}
+};
 
 THREE.Cone3d.prototype.stopBounce = function(){
     if(this.bouncing == true){
         this.scale.y = 1;
         this.bouncing = false;
     }
-}
+};
 
 THREE.Cone3d.prototype.squint = function(){
 //    if(this.squinting == false){
@@ -136,15 +136,17 @@ THREE.Cone3d.prototype.squint = function(){
 //        this.squinting = true;
 //    }
 //    if(this.squinting == false){
-        this.leftEye.material.map.offset.x = this.leftEye.material.map.offset.x + 0.01;
-        this.rightEye.material.map.offset.x = this.rightEye.material.map.offset.x - 0.01;
-        this.leftEye.material.map.offset.y = this.leftEye.material.map.offset.y - 0.008;
-        this.rightEye.material.map.offset.y = this.rightEye.material.map.offset.y - 0.008;
-        this.leftEye.material.map.needsUpdate = true;
-        this.rightEye.material.map.needsUpdate = true;
+        if(this.leftEye.material.map.offset.x < 0.38){
+            this.leftEye.material.map.offset.x = this.leftEye.material.map.offset.x + 0.01;
+            this.rightEye.material.map.offset.x = this.rightEye.material.map.offset.x - 0.01;
+            this.leftEye.material.map.offset.y = this.leftEye.material.map.offset.y + 0.008;
+            this.rightEye.material.map.offset.y = this.rightEye.material.map.offset.y + 0.008;
+            this.leftEye.material.map.needsUpdate = true;
+            this.rightEye.material.map.needsUpdate = true;
+        }
         this.squinting = true;
 //    }
-}
+};
 
 THREE.Cone3d.prototype.stopSquint = function(){
 //    if(this.squinting == true){
@@ -161,4 +163,4 @@ THREE.Cone3d.prototype.stopSquint = function(){
         this.rightEye.material.map.needsUpdate = true;
         this.squinting = false;
 //    }
-}
+};

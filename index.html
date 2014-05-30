@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
 
-        <script src="vendor/three.js/Three.js"></script>
+        <script src="vendor/three.js/three.js"></script>
         <script src="vendor/three.js/Detector.js"></script>
         <!-- https://github.com/mrdoob/stats.js -->
         <script src="vendor/three.js/Stats.js"></script>
@@ -53,7 +53,7 @@
             
             window.addEventListener('keydown',function(e){
                 if(e.keyCode == 32){
-                    console.info('space',cone);
+                    //console.info('space',cone);
                     if(!cone.bouncing){
                         cone.bounce();
                     }
@@ -71,7 +71,7 @@
                         antialias: true, // to get smoother output
                         preserveDrawingBuffer: true	// to allow screenshot
                     });
-                    renderer.setClearColorHex(0xBBBBBB, 1);
+                    renderer.setClearColor(0xBBBBBB, 1);
                     renderer.shadowMapEnabled = true;
                     renderer.shadowMapSoft = true;
                     // uncomment if webgl is required
@@ -141,13 +141,13 @@
 
                 var light = new THREE.SpotLight(0x8888FF, 2);
                 spot1 = light;
-                light.position.set(10, 12, 10);//.normalize();
+                light.position.set(30, 70, 40);//.normalize();
                 light.target.position.set(0, 0, 0);
                 light.rotation.y = Math.PI;
                 light.shadowCameraNear = 0.01;
                 light.castShadow = true;
                 light.shadowDarkness = 0.5;
-                light.shadowCameraVisible = true;
+//                light.shadowCameraVisible = true;
                 scene.add(light);
 
                 //https://github.com/mrdoob/three.js/blob/master/examples/webgl_shadowmap.html
@@ -164,7 +164,7 @@
 //                    shading		: THREE.SmoothShading
 //                });
 
-                THREE.ColorUtils.adjustHSV(planeMaterial.color, 0, 0, 0.9);
+//                THREE.ColorUtils.adjustHSV(planeMaterial.color, 0, 0, 0.9);
                 planeMaterial.ambient = planeMaterial.color;
 
                 ground = new THREE.Mesh(geometry, planeMaterial);
